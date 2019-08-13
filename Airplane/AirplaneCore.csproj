@@ -1,0 +1,123 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\customer\**" />
+    <Compile Remove="ClientApp\src\app\entertainer\**" />
+    <Compile Remove="ClientApp\src\app\event\**" />
+    <Compile Remove="ClientApp\src\app\services\**" />
+    <Compile Remove="ClientApp\src\app\venue\**" />
+    <Compile Remove="ClientApp\src\assets\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\customer\**" />
+    <Content Remove="ClientApp\src\app\entertainer\**" />
+    <Content Remove="ClientApp\src\app\event\**" />
+    <Content Remove="ClientApp\src\app\services\**" />
+    <Content Remove="ClientApp\src\app\venue\**" />
+    <Content Remove="ClientApp\src\assets\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\customer\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\entertainer\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\event\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\services\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\venue\**" />
+    <EmbeddedResource Remove="ClientApp\src\assets\**" />
+    <None Remove="ClientApp\src\app\customer\**" />
+    <None Remove="ClientApp\src\app\entertainer\**" />
+    <None Remove="ClientApp\src\app\event\**" />
+    <None Remove="ClientApp\src\app\services\**" />
+    <None Remove="ClientApp\src\app\venue\**" />
+    <None Remove="ClientApp\src\assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\app.routes.ts" />
+    <None Remove="ClientApp\src\app\models\configuration.model.js" />
+    <None Remove="ClientApp\src\app\models\configuration.model.js" />
+    <None Remove="ClientApp\src\app\models\configuration.model.js.map" />
+    <None Remove="ClientApp\src\app\models\configuration.model.js.map" />
+    <None Remove="ClientApp\src\app\models\configuration.model.ts" />
+    <None Remove="ClientApp\src\app\models\customer.model.js" />
+    <None Remove="ClientApp\src\app\models\customer.model.js" />
+    <None Remove="ClientApp\src\app\models\customer.model.js.map" />
+    <None Remove="ClientApp\src\app\models\customer.model.js.map" />
+    <None Remove="ClientApp\src\app\models\customer.model.ts" />
+    <None Remove="ClientApp\src\app\models\customer.model.ts" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.js" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.js" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.js.map" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.js.map" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.ts" />
+    <None Remove="ClientApp\src\app\models\entertainer.model.ts" />
+    <None Remove="ClientApp\src\app\models\event.model.ts" />
+    <None Remove="ClientApp\src\app\models\event.model.ts" />
+    <None Remove="ClientApp\src\app\models\venue.model.js" />
+    <None Remove="ClientApp\src\app\models\venue.model.js" />
+    <None Remove="ClientApp\src\app\models\venue.model.js.map" />
+    <None Remove="ClientApp\src\app\models\venue.model.js.map" />
+    <None Remove="ClientApp\src\app\models\venue.model.ts" />
+    <None Remove="ClientApp\src\app\models\venue.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\app.routes.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\modules\" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

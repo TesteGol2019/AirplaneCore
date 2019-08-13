@@ -1,0 +1,26 @@
+<mat-card>
+  <mat-card-title>
+    Airplane Item
+  </mat-card-title>
+  <mat-card-content>
+    <div class="example-container">
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+        <mat-form-field>
+          <input type="text" matInput formControlName="model" name="Model" placeholder="Model" />
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" matInput formControlName="passengers" placeholder="Passengers" />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="creationDate" formControlName="creationDate" placeholder="Choose a creation date">
+          <mat-datepicker-toggle matSuffix [for]="creationDate"></mat-datepicker-toggle>
+          <mat-datepicker #creationDate></mat-datepicker>
+        </mat-form-field>
+        <mat-card-actions>
+          <button type="submit" mat-button color="primary" [disabled]="!formGroup.valid">Save</button>
+          <a mat-button routerLink="/airplanes">Return</a>
+        </mat-card-actions>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
